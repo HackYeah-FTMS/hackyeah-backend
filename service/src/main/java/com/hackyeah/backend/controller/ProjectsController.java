@@ -2,17 +2,20 @@ package com.hackyeah.backend.controller;
 
 import com.hackyeah.api.ProjectsApi;
 import com.hackyeah.model.ProjectDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Slf4j
 @RestController
 public class ProjectsController implements ProjectsApi {
 
     @Override
     public ResponseEntity<List<ProjectDto>> getProjects() {
+        log.info("GET /projects request");
         final ProjectDto projectDto = new ProjectDto()
                 .id(1L)
                 .title("Test")
