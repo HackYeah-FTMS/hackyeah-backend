@@ -31,7 +31,7 @@ public class ProjectsService {
     private ProjectDto toProjectDto(Project project) {
         return new ProjectDto()
                 .id(project.getId())
-                .ownerId(project.getId())
+                .ownerId(project.getUser().getId())
                 .title(project.getTitle())
                 .ideaImage(project.getIdeaImage())
                 .solutionImage(project.getSolutionImage())
