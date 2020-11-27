@@ -7,7 +7,8 @@ servers:
 security:
   - bearer-atk-token: []
 tags:
-  - name: Auth
+  - name: Projects
+  - name: Ideas
 paths:
   /projects:
     get:
@@ -17,13 +18,28 @@ paths:
       description: 'Get all users projects'
       responses:
         '200':
-          description: Authentication valid - token in body returned
+          description: List of projects
           content:
             application/json:
               schema:
-                type: "array"
+                type: array
                 items:
                   $ref: '#/components/schemas/ProjectDto'
+  /ideas:
+    get:
+      tags:
+        - Ideas
+      operationId: getIdeas
+      description: 'Get all users ideas'
+      responses:
+        '200':
+          description: List of ideas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdeaDto'
 components:
   schemas:
     ProjectDto:
