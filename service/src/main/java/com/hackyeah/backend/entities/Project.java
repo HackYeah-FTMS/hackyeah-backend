@@ -1,5 +1,7 @@
 package com.hackyeah.backend.entities;
 
+import lombok.Getter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import java.util.Set;
 
+@Getter
 @Entity(name = "PROJECTS")
 public class Project {
     @Id
@@ -15,6 +18,7 @@ public class Project {
     private Long id;
     @OneToOne
     private User user;
+    private String title;
     private String ideaImage;
     private String solutionImage;
     private String description;

@@ -15,7 +15,7 @@ paths:
       tags:
         - Projects
       operationId: getProjects
-      description: 'Get all users projects'
+      description: 'Get all users projects ordered by most recent'
       responses:
         '200':
           description: List of projects
