@@ -49,9 +49,9 @@ components:
             type: string
         points:
           type: integer
-        creationDate:
-          type: string
-          format: date-time
+        creationTimestamp:
+          type: integer
+          format: int64
     IdeaDto:
       type: object
       properties:
@@ -73,9 +73,9 @@ components:
             $ref: '#/components/schemas/CommentDto'
         points:
           type: integer
-        creationDate:
-          type: string
-          format: date-time
+        creationTimestamp:
+          type: integer
+          format: int64
     CommentDto:
       type: object
       properties:

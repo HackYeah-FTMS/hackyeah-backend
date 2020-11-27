@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ProjectsController implements ProjectsApi {
                 .description("This is description")
                 .tags(List.of("liść"))
                 .points(4)
-                .creationDate(OffsetDateTime.now());
+                .creationTimestamp(new Timestamp(System.currentTimeMillis()).getTime());
         return ResponseEntity.ok(List.of(projectDto));
     }
 }
