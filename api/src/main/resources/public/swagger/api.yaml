@@ -25,6 +25,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ProjectDto'
+    post:
+      tags:
+        - Projects
+      operationId: addProject
+      description: 'Add project by user'
+      parameters:
+        - in: header
+          name: X-User-ID
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: Optional description in *Markdown*
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectRequest'
+      responses:
+        '204':
+          description: Returned when project creation operation is successful
+
   /ideas:
     get:
       tags:
@@ -42,6 +63,26 @@ paths:
                   $ref: '#/components/schemas/IdeaDto'
 components:
   schemas:
+    CreateProjectRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        ideaImage:
+          type: string
+        solutionImage:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - title
+        - ideaImage
+        - solutionImage
+        - description
     ProjectDto:
       type: object
       properties:
