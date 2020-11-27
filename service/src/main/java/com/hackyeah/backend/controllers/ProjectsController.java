@@ -1,4 +1,4 @@
-package com.hackyeah.backend.controller;
+package com.hackyeah.backend.controllers;
 
 import com.hackyeah.api.ProjectsApi;
 import com.hackyeah.model.ProjectDto;
