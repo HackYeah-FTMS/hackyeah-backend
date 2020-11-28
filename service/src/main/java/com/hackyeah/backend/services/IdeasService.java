@@ -8,6 +8,7 @@ import com.hackyeah.backend.repositories.IdeasRepository;
 import com.hackyeah.backend.repositories.UserRepository;
 import com.hackyeah.model.CommentDto;
 import com.hackyeah.model.CreateCommentRequest;
+import com.hackyeah.model.CreateIdeaRequest;
 import com.hackyeah.model.IdeaDetailsDto;
 import com.hackyeah.model.IdeaDto;
 import com.hackyeah.model.OwnerDto;
@@ -25,6 +26,7 @@ public class IdeasService {
     private final IdeasRepository ideasRepository;
     private final UserRepository userRepository;
     private final CommentsService commentsService;
+    private final TagsService tagsService;
 
     public List<IdeaDto> getAllIdeas() {
         return ideasRepository.findAll().stream()
@@ -95,6 +97,20 @@ public class IdeasService {
         final Idea idea = ideasRepository.findById(ideaId)
                 .orElseThrow(() -> new RuntimeException("Idea with id " + ideaId + " not found"));
         idea.getComments().add(comment);
+        ideasRepository.save(idea);
+    }
+
+    public void createIdea(Long userId, CreateIdeaRequest createIdeaRequest) {
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User with id " + userId + " not found"));
+        final Idea idea = new Idea();
+        idea.setAdditionalInfo(createIdeaRequest.getAdditionalInfo());
+        idea.setImage(createIdeaRequest.getImage());
+        idea.setTags(tagsService.fetchTags(createIdeaRequest.getTags()));
+        idea.setUser(user);
+        idea.setPoints(0);
+        idea.setCreationTimestamp(1605145954709L);
+
         ideasRepository.save(idea);
     }
 }

@@ -1,6 +1,7 @@
 package com.hackyeah.backend.entities;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@Setter
 @Entity(name = "IDEAS")
 public class Idea {
     @Id

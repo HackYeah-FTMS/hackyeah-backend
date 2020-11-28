@@ -3,6 +3,7 @@ package com.hackyeah.backend.controllers;
 import com.hackyeah.api.IdeasApi;
 import com.hackyeah.backend.services.IdeasService;
 import com.hackyeah.model.CreateCommentRequest;
+import com.hackyeah.model.CreateIdeaRequest;
 import com.hackyeah.model.IdeaDetailsDto;
 import com.hackyeah.model.IdeaDto;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,13 @@ public class IdeasController implements IdeasApi {
                                                   @Valid CreateCommentRequest createCommentRequest) {
         log.info("POST /ideas/{}/comments request", ideaId);
         ideasService.addComment(userId, ideaId, createCommentRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> addIdea(Long userId, @Valid CreateIdeaRequest createIdeaRequest) {
+        log.info("POST /ideas request");
+        ideasService.createIdea(userId, createIdeaRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

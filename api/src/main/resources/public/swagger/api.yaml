@@ -62,6 +62,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/IdeaDto'
+    post:
+      tags:
+        - Ideas
+      operationId: addIdea
+      description: 'Get all users ideas'
+      parameters:
+        - in: header
+          name: X-User-ID
+          schema:
+            type: integer
+            format: int64
+          required: true
+      requestBody:
+        description: Body of project to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateIdeaRequest'
+      responses:
+        '204':
+          description: Returned when idea creation operation is successful
 
   /ideas/{ideaId}:
     get:
@@ -136,6 +157,20 @@ components:
         - ideaImage
         - solutionImage
         - description
+    CreateIdeaRequest:
+      type: object
+      properties:
+        image:
+          type: string
+        additionalInfo:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - image
+        - additionalInfo
     CreateCommentRequest:
       type: object
       properties:
