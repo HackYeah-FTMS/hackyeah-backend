@@ -83,6 +83,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IdeaDetailsDto'
+
+  /ideas/{ideaId}/comments:
+      post:
+        tags:
+          - Ideas
+        operationId: addCommentForIdea
+        description: 'Add comment for specific idea'
+        parameters:
+          - in: header
+            name: X-User-ID
+            schema:
+              type: integer
+              format: int64
+            required: true
+          - in: path
+            name: ideaId
+            schema:
+              type: integer
+              format: int64
+            required: true
+            description: Numeric ID of the idea to comment
+        requestBody:
+          description: Body of comment to be created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCommentRequest'
+        responses:
+          '204':
+            description: Comment created
 components:
   schemas:
     CreateProjectRequest:
@@ -105,6 +135,15 @@ components:
         - ideaImage
         - solutionImage
         - description
+    CreateCommentRequest:
+      type: object
+      properties:
+        content:
+          type: string
+        image:
+          type: string
+      required:
+        - content
     ProjectDto:
       type: object
       properties:

@@ -5,7 +5,9 @@ import com.hackyeah.backend.entities.Idea;
 import com.hackyeah.backend.entities.Tag;
 import com.hackyeah.backend.entities.User;
 import com.hackyeah.backend.repositories.IdeasRepository;
+import com.hackyeah.backend.repositories.UserRepository;
 import com.hackyeah.model.CommentDto;
+import com.hackyeah.model.CreateCommentRequest;
 import com.hackyeah.model.IdeaDetailsDto;
 import com.hackyeah.model.IdeaDto;
 import com.hackyeah.model.OwnerDto;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class IdeasService {
 
     private final IdeasRepository ideasRepository;
+    private final UserRepository userRepository;
+    private final CommentsService commentsService;
 
     public List<IdeaDto> getAllIdeas() {
         return ideasRepository.findAll().stream()
@@ -78,5 +82,19 @@ public class IdeasService {
                 .additionalInfo(idea.getAdditionalInfo())
                 .points(idea.getPoints())
                 .creationTimestamp(idea.getCreationTimestamp());
+    }
+
+    public void addComment(Long userId, Long ideaId, CreateCommentRequest createCommentRequest) {
+        final User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User with id " + userId + " not found"));
+        final Comment comment = commentsService.createComment(
+                user,
+                createCommentRequest.getContent(),
+                createCommentRequest.getImage()
+        );
+        final Idea idea = ideasRepository.findById(ideaId)
+                .orElseThrow(() -> new RuntimeException("Idea with id " + ideaId + " not found"));
+        idea.getComments().add(comment);
+        ideasRepository.save(idea);
     }
 }
