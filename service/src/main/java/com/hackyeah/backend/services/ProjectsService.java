@@ -51,9 +51,9 @@ public class ProjectsService {
     }
 
     @Transactional
-    public ResponseEntity<Void> createProject(Integer userId, CreateProjectRequest createProjectRequest) {
+    public ResponseEntity<Void> createProject(Long userId, CreateProjectRequest createProjectRequest) {
         final Project project = new Project();
-        final User user = userRepository.findById(Long.valueOf(userId))
+        final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User does not exist"));
         project.setUser(user);
         project.setTags(tagsService.fetchTags(createProjectRequest.getTags()));

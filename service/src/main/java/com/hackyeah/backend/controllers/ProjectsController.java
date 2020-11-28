@@ -26,7 +26,7 @@ public class ProjectsController implements ProjectsApi {
     }
 
     @Override
-    public ResponseEntity<Void> addProject(Integer userId, @Valid CreateProjectRequest createProjectRequest) {
+    public ResponseEntity<Void> addProject(Long userId, @Valid CreateProjectRequest createProjectRequest) {
         log.info("POST /projects request");
         return projectsService.createProject(userId, createProjectRequest);
     }
