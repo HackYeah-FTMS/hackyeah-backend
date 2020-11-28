@@ -8,6 +8,7 @@ import com.hackyeah.model.CreateProjectRequest;
 import com.hackyeah.model.ProjectDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,10 +35,15 @@ public class ProjectsController implements ProjectsApi {
                                            @Valid MultipartFile ideaImage,
                                            @Valid MultipartFile solutionImage) {
         log.info("POST /projects request with data: {}", data);
-        final CreateProjectRequest createProjectRequest = toCreateProjectRequest(data);
+        CreateProjectRequest createProjectRequest = toCreateProjectRequest(data);
         if (createProjectRequest == null) {
             log.error("createProjectRequest null");
-            return ResponseEntity.badRequest().build();
+            final String withoutBrackets = data.substring(1).substring(0, data.length() - 2).replace("\\", "");
+            log.info("Retry convert data to request: {}", withoutBrackets);
+            createProjectRequest = toCreateProjectRequest(withoutBrackets);
+            if (createProjectRequest == null) {
+                return ResponseEntity.badRequest().build();
+            }
         } else {
             log.info(createProjectRequest.toString());
         }
