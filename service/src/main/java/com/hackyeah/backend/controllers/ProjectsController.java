@@ -33,10 +33,13 @@ public class ProjectsController implements ProjectsApi {
                                            String data,
                                            @Valid MultipartFile ideaImage,
                                            @Valid MultipartFile solutionImage) {
-        log.info("POST /projects request");
+        log.info("POST /projects request with data: {}", data);
         final CreateProjectRequest createProjectRequest = toCreateProjectRequest(data);
         if (createProjectRequest == null) {
+            log.error("createProjectRequest null");
             return ResponseEntity.badRequest().build();
+        } else {
+            log.info(createProjectRequest.toString());
         }
         projectsService.createProject(userId, createProjectRequest, ideaImage, solutionImage);
         return ResponseEntity.noContent().build();
