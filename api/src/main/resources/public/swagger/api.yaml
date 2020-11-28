@@ -61,6 +61,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/IdeaDto'
+
+  /ideas/{ideaId}:
+    get:
+      tags:
+        - Ideas
+      operationId: getIdeaDetails
+      description: 'Get specific idea details'
+      parameters:
+        - in: path
+          name: ideaId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the idea to get
+      responses:
+        '200':
+          description: Idea details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdeaDetailsDto'
 components:
   schemas:
     CreateProjectRequest:
@@ -115,19 +136,31 @@ components:
         id:
           type: integer
           format: int64
-        ownerId:
-          type: integer
-          format: int64
         additionalInfo:
           type: string
-        tags:
-          type: array
-          items:
-            type: string
+        points:
+          type: integer
+        creationTimestamp:
+          type: integer
+          format: int64
+    IdeaDetailsDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        owner:
+          $ref: '#/components/schemas/OwnerDto'
+        additionalInfo:
+          type: string
         comments:
           type: array
           items:
             $ref: '#/components/schemas/CommentDto'
+        tags:
+          type: array
+          items:
+            type: string
         points:
           type: integer
         creationTimestamp:
@@ -139,8 +172,15 @@ components:
         id:
           type: integer
           format: int64
-        ownerId:
+        owner:
+          $ref: '#/components/schemas/OwnerDto'
+        content:
+          type: string
+    OwnerDto:
+      type: object
+      properties:
+        id:
           type: integer
           format: int64
-        content:
+        username:
           type: string
