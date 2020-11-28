@@ -8,10 +8,11 @@ import com.hackyeah.backend.repositories.UserRepository;
 import com.hackyeah.model.CreateProjectRequest;
 import com.hackyeah.model.ProjectDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -24,6 +25,7 @@ public class ProjectsService {
     private final ProjectsRepository projectsRepository;
     private final UserRepository userRepository;
     private final TagsService tagsService;
+    private final ImageService imageService;
 
     public List<ProjectDto> getAllProjects() {
         final List<Project> projects = projectsRepository.findAll();
@@ -51,22 +53,25 @@ public class ProjectsService {
     }
 
     @Transactional
-    public ResponseEntity<Void> createProject(Long userId, CreateProjectRequest createProjectRequest) {
-        final Project project = new Project();
+    public void createProject(Long userId,
+                              CreateProjectRequest createProjectRequest,
+                              @Valid MultipartFile ideaImage,
+                              @Valid MultipartFile solutionImage) {
         final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User does not exist"));
+        final Project project = new Project();
         project.setUser(user);
         project.setTags(tagsService.fetchTags(createProjectRequest.getTags()));
 
+        final String ideaImageLocation = imageService.saveImage(ideaImage, "idea_");
+        final String solutionImageLocation = imageService.saveImage(solutionImage, "solution_");
         project.setTitle(createProjectRequest.getTitle());
         project.setDescription(createProjectRequest.getDescription());
-        project.setIdeaImage(createProjectRequest.getIdeaImage());
-        project.setSolutionImage(createProjectRequest.getSolutionImage());
+        project.setIdeaImage(ideaImageLocation);
+        project.setSolutionImage(solutionImageLocation);
         project.setCreationTimestamp(Timestamp.valueOf(LocalDateTime.now()).getTime());
         project.setPoints(0);
 
         projectsRepository.save(project);
-
-        return ResponseEntity.noContent().build();
     }
 }

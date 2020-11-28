@@ -1,5 +1,7 @@
 package com.hackyeah.backend.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hackyeah.api.ProjectsApi;
 import com.hackyeah.backend.services.ProjectsService;
 import com.hackyeah.model.CreateProjectRequest;
@@ -8,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,8 +29,24 @@ public class ProjectsController implements ProjectsApi {
     }
 
     @Override
-    public ResponseEntity<Void> addProject(Long userId, @Valid CreateProjectRequest createProjectRequest) {
+    public ResponseEntity<Void> addProject(Long userId,
+                                           String data,
+                                           @Valid MultipartFile ideaImage,
+                                           @Valid MultipartFile solutionImage) {
         log.info("POST /projects request");
-        return projectsService.createProject(userId, createProjectRequest);
+        final CreateProjectRequest createProjectRequest = toCreateProjectRequest(data);
+        if (createProjectRequest == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        projectsService.createProject(userId, createProjectRequest, ideaImage, solutionImage);
+        return ResponseEntity.noContent().build();
+    }
+
+    private CreateProjectRequest toCreateProjectRequest(String data) {
+        try {
+            return new ObjectMapper().readValue(data, CreateProjectRequest.class);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 }

@@ -9,7 +9,30 @@ security:
 tags:
   - name: Projects
   - name: Ideas
+  - name: Images
 paths:
+  /images/{imageName}:
+    get:
+      tags:
+        - Images
+      operationId: getImage
+      description: 'Get specific image'
+      parameters:
+        - in: path
+          name: imageName
+          schema:
+            type: string
+          required: true
+          description: File name ex. image.jpg
+      responses:
+        '200':
+          description: Get specific image
+          content:
+            application/json:
+              schema:
+                type: string
+                format: byte
+
   /projects:
     get:
       tags:
@@ -40,9 +63,22 @@ paths:
       requestBody:
         description: Body of project to be created
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateProjectRequest'
+              type: object
+              properties:
+                data:
+                  type: string
+                ideaImage:
+                  type: string
+                  format: binary
+                solutionImage:
+                  type: string
+                  format: binary
+              required:
+                - data
+                - ideaImage
+                - solutionImage
       responses:
         '204':
           description: Returned when project creation operation is successful
@@ -142,10 +178,6 @@ components:
       properties:
         title:
           type: string
-        ideaImage:
-          type: string
-        solutionImage:
-          type: string
         description:
           type: string
         tags:
@@ -154,8 +186,6 @@ components:
             type: string
       required:
         - title
-        - ideaImage
-        - solutionImage
         - description
     CreateIdeaRequest:
       type: object
