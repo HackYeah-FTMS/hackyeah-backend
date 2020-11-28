@@ -34,7 +34,7 @@ public class ProjectsController implements ProjectsApi {
                                            String data,
                                            @Valid MultipartFile ideaImage,
                                            @Valid MultipartFile solutionImage) {
-        log.info("POST /projects request with data: {}", data);
+        log.info("POST /projects request with data: {} and userId: {}", data, userId);
         CreateProjectRequest createProjectRequest = toCreateProjectRequest(data);
         if (createProjectRequest == null) {
             log.error("createProjectRequest null");
