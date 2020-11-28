@@ -62,6 +62,7 @@ public class IdeasService {
         commentDto.setId(comment.getId());
         commentDto.setOwner(toOwner(comment.getUser()));
         commentDto.setContent(comment.getContent());
+        commentDto.setImage(comment.getImage());
         return commentDto;
     }
 

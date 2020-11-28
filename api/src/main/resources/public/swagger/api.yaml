@@ -175,6 +175,8 @@ components:
           format: int64
         owner:
           $ref: '#/components/schemas/OwnerDto'
+        image:
+          type: string
         content:
           type: string
     OwnerDto:
