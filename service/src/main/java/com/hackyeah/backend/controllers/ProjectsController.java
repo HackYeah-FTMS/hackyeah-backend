@@ -49,6 +49,8 @@ public class ProjectsController implements ProjectsApi {
         try {
             return new ObjectMapper().readValue(data, CreateProjectRequest.class);
         } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
+            log.error(e.getOriginalMessage());
             return null;
         }
     }
