@@ -19,11 +19,13 @@ public class IdeasController implements IdeasApi {
 
     @Override
     public ResponseEntity<List<IdeaDto>> getIdeas() {
+        log.info("GET /ideas request");
         return ResponseEntity.ok(ideasService.getAllIdeas());
     }
 
     @Override
-    public ResponseEntity<IdeaDetailsDto> getIdeaDetails(Integer ideaId) {
+    public ResponseEntity<IdeaDetailsDto> getIdeaDetails(Long ideaId) {
+        log.info("GET /ideas/{} request", ideaId);
         return ResponseEntity.ok(ideasService.getIdeaDetails(ideaId));
     }
 }
