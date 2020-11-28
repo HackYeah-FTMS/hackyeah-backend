@@ -44,7 +44,8 @@ public class IdeasService {
         return new IdeaDetailsDto()
                 .id(idea.getId())
                 .owner(toOwner(idea.getUser()))
-                .additionalInfo(idea.getAdditionalInfo())
+                .description(idea.getAdditionalInfo())
+                .image(idea.getImage())
                 .comments(toCommentsDto(idea.getComments()))
                 .tags(toTags(idea.getTags()))
                 .points(idea.getPoints())
@@ -81,7 +82,9 @@ public class IdeasService {
     private IdeaDto toIdeaDto(Idea idea) {
         return new IdeaDto()
                 .id(idea.getId())
-                .additionalInfo(idea.getAdditionalInfo())
+                .description(idea.getAdditionalInfo())
+                .owner(toOwner(idea.getUser()))
+                .image(idea.getImage())
                 .points(idea.getPoints())
                 .creationTimestamp(idea.getCreationTimestamp());
     }

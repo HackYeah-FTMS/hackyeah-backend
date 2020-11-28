@@ -212,8 +212,12 @@ components:
         id:
           type: integer
           format: int64
-        additionalInfo:
+        description:
           type: string
+        image:
+          type: string
+        owner:
+          $ref: '#/components/schemas/OwnerDto'
         points:
           type: integer
         creationTimestamp:
@@ -227,7 +231,9 @@ components:
           format: int64
         owner:
           $ref: '#/components/schemas/OwnerDto'
-        additionalInfo:
+        description:
+          type: string
+        image:
           type: string
         comments:
           type: array
